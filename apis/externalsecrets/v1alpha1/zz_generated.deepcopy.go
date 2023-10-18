@@ -1449,14 +1449,14 @@ func (in *SecretStoreProvider) DeepCopyInto(out *SecretStoreProvider) {
 		*out = new(KubernetesProvider)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.Fake != nil {
-		in, out := &in.Fake, &out.Fake
-		*out = new(FakeProvider)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.PasswordDepot != nil {
 		in, out := &in.PasswordDepot, &out.PasswordDepot
 		*out = new(PasswordDepotProvider)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.Fake != nil {
+		in, out := &in.Fake, &out.Fake
+		*out = new(FakeProvider)
 		(*in).DeepCopyInto(*out)
 	}
 }
@@ -1498,11 +1498,6 @@ func (in *SecretStoreRetrySettings) DeepCopyInto(out *SecretStoreRetrySettings) 
 		in, out := &in.RetryInterval, &out.RetryInterval
 		*out = new(string)
 		**out = **in
-	}
-	if in.PasswordDepot != nil {
-		in, out := &in.PasswordDepot, &out.PasswordDepot
-		*out = new(PasswordDepotProvider)
-		(*in).DeepCopyInto(*out)
 	}
 }
 
