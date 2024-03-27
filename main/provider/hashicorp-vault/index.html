@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../pictures/eso-round-logo.svg">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.13">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.15">
     
     
       
@@ -2303,6 +2303,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Vault Namespaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authenticating-into-a-different-namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authenticating into a different namespace
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -4273,6 +4288,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Vault Namespaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authenticating-into-a-different-namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authenticating into a different namespace
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -4550,6 +4580,7 @@ Will generate a secret with:
 <a href="https://developer.hashicorp.com/vault/docs/auth/aws">awsAuth</a> and
 <a href="https://developer.hashicorp.com/vault/docs/auth/cert">tlsCert</a>, each one comes with it's own
 trade-offs. Depending on the authentication method you need to adapt your environment.</p>
+<p>If you're using Vault namespaces, you can authenticate into one namespace and use the vault token against a different namespace, if desired.</p>
 <h4 id="token-based-authentication">Token-based authentication</h4>
 <p>A static token is stored in a <code>Kind=Secret</code> and is used to authenticate with vault.</p>
 <p><div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">external-secrets.io/v1beta1</span>
@@ -4978,6 +5009,24 @@ and pick the best fit for your environment and Vault configuration.</p>
 <span class="w">      </span><span class="nt">auth</span><span class="p">:</span>
 <span class="w">        </span><span class="c1"># ...</span>
 </code></pre></div>
+<h5 id="authenticating-into-a-different-namespace">Authenticating into a different namespace</h5>
+<p>In some situations your authentication backend may be in one namespace, and your secrets in another. You can authenticate into one namespace, and use that token against another, by setting <code>provider.vault.namespace</code> and <code>provider.vault.auth.namespace</code> to different values. If <code>provider.vault.auth.namespace</code> is unset but <code>provider.vault.namespace</code> is, it will default to the <code>provider.vault.namespace</code> value.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">external-secrets.io/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SecretStore</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vault-backend</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">provider</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vault</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://my.vault.server:8200&quot;</span>
+<span class="w">      </span><span class="c1"># See https://www.vaultproject.io/docs/enterprise/namespaces</span>
+<span class="w">      </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;app-team&quot;</span>
+<span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;secret&quot;</span>
+<span class="w">      </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;v2&quot;</span>
+<span class="w">      </span><span class="nt">auth</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;kubernetes-team&quot;</span>
+<span class="w">        </span><span class="c1"># ...</span>
+</code></pre></div>
 <h4 id="read-your-writes">Read Your Writes</h4>
 <p>Vault 1.10.0 and later encodes information in the token to detect the case
 when a server is behind. If a Vault server does not have information about
@@ -5055,7 +5104,7 @@ For a list of trademarks of The Linux Foundation, please see our <a href="https:
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.indexes", "navigation.expand"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c8d2eff1.min.js"></script>
+      <script src="../../assets/javascripts/bundle.bd41221c.min.js"></script>
       
     
   </body>
