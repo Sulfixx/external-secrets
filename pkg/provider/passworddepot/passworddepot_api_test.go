@@ -53,6 +53,18 @@ var (
 			},
 		},
 	}
+	mockDatabaseEntriesSimilarNames = DatabaseEntries{
+		Entries: []Entry{
+			{
+				Name:        "mySecret-acme-dev",
+				Fingerprint: "test2",
+			},
+			{
+				Name:        "mySecret-acme-test",
+				Fingerprint: "test1",
+			},
+		},
+	}
 )
 
 func TestPasswortDepotApiListDatabases(t *testing.T) {
@@ -241,6 +253,23 @@ func TestPasswortDepotApiGetSecret(t *testing.T) {
 				secretName: mySecret,
 			},
 			want:    SecretEntry{},
+			wantErr: true,
+		},
+		{
+			name: "no secret with name similar name",
+			fields: fields{
+				funcStack: []func(req *http.Request) (*http.Response, error){
+					createResponder(mockDatabaseList, true),                //nolint:bodyclose // linters bug
+					createResponder(mockDatabaseEntriesSimilarNames, true), //nolint:bodyclose // linters bug
+				},
+			},
+			args: args{
+				database:   someDB,
+				secretName: "mySecret-acme-test",
+			},
+			want: SecretEntry{
+				Name: "mySecret-acme-test",
+			},
 			wantErr: true,
 		},
 	}
